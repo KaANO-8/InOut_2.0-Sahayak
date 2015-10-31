@@ -19,9 +19,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent svc = new Intent(this, OverlayObjects.class);
-        startService(svc);
-        finish();
+//        Intent svc = new Intent(this, OverlayObjects.class);
+//        startService(svc);
+//        finish();
+
+        Intent Tutorial = new Intent(this, TutorialActivity.class);
+        startActivity(Tutorial);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

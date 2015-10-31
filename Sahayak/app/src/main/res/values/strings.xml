@@ -2,4 +2,7 @@
     <string name="app_name">Sahayak</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_overlay_objects">OverlayObjects</string>
+    <string name="title_activity_tutorial">TutorialActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

@@ -15,6 +15,11 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
 
     private View topLeftView;
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return Service.START_STICKY;
+    }
+
     private Button overlayedButton;
     private float offsetX;
     private float offsetY;
@@ -41,6 +46,7 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
         overlayedButton.setAlpha(0.8f);
         overlayedButton.setBackgroundColor(0x55fe4444);
         overlayedButton.setOnClickListener(this);
+        overlayedButton.setId(R.id.overlayButton);
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.LEFT | Gravity.TOP;
@@ -74,6 +80,7 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
 
     }
 
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -95,8 +102,6 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
             int[] topLeftLocationOnScreen = new int[2];
             topLeftView.getLocationOnScreen(topLeftLocationOnScreen);
 
-            System.out.println("topLeftY="+topLeftLocationOnScreen[1]);
-            System.out.println("originalY="+originalYPos);
 
             float x = event.getRawX();
             float y = event.getRawY();
