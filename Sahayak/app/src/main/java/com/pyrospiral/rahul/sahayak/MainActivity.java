@@ -65,9 +65,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
-                startActivity(intent);
+
+                Intent mIntent = new Intent(getApplicationContext(), TutorialService.class);
+                startService(mIntent);
+                finish();
+
                /* Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
                 startActivity(intent);*/
         //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
           //              .setAction("Action", null).show();

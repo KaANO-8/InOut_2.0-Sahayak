@@ -3,7 +3,6 @@ package com.pyrospiral.rahul.sahayak;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -13,23 +12,23 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class OverlayObjects extends Service implements View.OnTouchListener, View.OnClickListener {
+public class TutorialService extends Service implements View.OnTouchListener, View.OnClickListener {
 
     String from;
     private View topLeftView;
 
-    private Button overlayedButton, overlayedText, overlayedTransparent;
+    private Button End, Place_Arrow, Next;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return Service.START_STICKY;
     }
 
+    LinearLayout mButtonBar,oView;
     private float offsetX;
     private float offsetY;
     private int originalXPos;
@@ -71,62 +70,106 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
 
         wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
-        overlayedButton = new Button(this);
-        //overlayedButton.setText("Overlay b");
-        overlayedButton.setAlpha(0.8f);
-        //overlayedButton.setBackgroundColor(0x55fe4444);
-        overlayedButton.setBackground(getResources().getDrawable(R.drawable.arrow_down));
-        overlayedButton.setRotation(180);
-        overlayedButton.setVisibility(View.VISIBLE);
+        mButtonBar = new LinearLayout(this);
+        mButtonBar.setOrientation(LinearLayout.HORIZONTAL);
+        mButtonBar.setBackgroundColor(0x88ffffff);
 
-        ImageView image = new ImageView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
 
-        int id = getResources().getIdentifier("com.pyrospiral.rahul.sahayak:drawable/arrow_down", null, null);
 
-        image.setImageResource(id);
-
-        Animation animation
-                = AnimationUtils.loadAnimation(this, R.anim.animation);
-
-        //image.startAnimation(animation);
-
-        overlayedText = new Button(this);
-        overlayedText.setText(R.string.hindi);
+        End = new Button(this);
+        End.setText("End");
         //overlayedButton.setOnTouchListener(this);
-        overlayedText.setAlpha(1f);
-        overlayedText.setBackgroundColor(getResources().getColor(R.color.white));
-        overlayedText.setTextColor(getResources().getColor(R.color.black));
+        End.setAlpha(1f);
+        End.setBackgroundColor(getResources().getColor(R.color.white));
+        End.setTextColor(getResources().getColor(R.color.black));
+        params.gravity = Gravity.LEFT;
+        End.setLayoutParams(params);
+        End.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Yu clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        overlayedTransparent = new Button(this);
-        overlayedTransparent.setBackgroundColor(Color.TRANSPARENT);
-        overlayedTransparent.setOnClickListener(this);
+        Place_Arrow = new Button(this);
+        Place_Arrow.setText("Place Arrow");
+        //overlayedButton.setOnTouchListener(this);
+        Place_Arrow.setAlpha(1f);
+        Place_Arrow.setBackgroundColor(getResources().getColor(R.color.white));
+        Place_Arrow.setTextColor(getResources().getColor(R.color.black));
+        params.gravity = Gravity.CENTER;
+        Place_Arrow.setLayoutParams(params);
+        Place_Arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Yu clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
-        params.gravity = Gravity.LEFT | Gravity.TOP;
-        params.x = 150;
-        params.y = 470;
-        params.width = 100;
+
+        Next = new Button(this);
+        Next.setText("Next");
+        //overlayedButton.setOnTouchListener(this);
+        Next.setAlpha(1f);
+        Next.setBackgroundColor(getResources().getColor(R.color.white));
+        Next.setTextColor(getResources().getColor(R.color.black));
+        params.gravity = Gravity.RIGHT;
+        Next.setLayoutParams(params);
+        Next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Yu clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mButtonBar.addView(End);
+        mButtonBar.addView(Place_Arrow);
+        mButtonBar.addView(Next);
 
         WindowManager.LayoutParams params2 = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
-        params2.gravity = Gravity.LEFT | Gravity.TOP;
+        params2.gravity = Gravity.LEFT | Gravity.BOTTOM;
         params2.x = 300;
-        params2.y = 440;
         //params.width = 100;
 
-        WindowManager.LayoutParams params_trans = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
-        params_trans.gravity = Gravity.LEFT | Gravity.TOP;
-        params_trans.x = 43;
-        params_trans.y = 550;
-        params_trans.width = 650;
-        params_trans.height = 80;
 
-        wm.addView(image, params);
-        wm.addView(overlayedText,params2);
-        wm.addView(overlayedTransparent, params_trans);
+        WindowManager.LayoutParams BUTTONBARparams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.TRANSLUCENT);
+        BUTTONBARparams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
 
 
+        wm.addView(mButtonBar,BUTTONBARparams);
+
+
+        oView = new LinearLayout(this);
+        oView.setBackgroundColor(0x88ff0000); // The translucent red color
+
+        WindowManager.LayoutParams ALERTparams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.TRANSLUCENT);
+                ALERTparams.height = 1040;
+                ALERTparams.gravity = Gravity.LEFT | Gravity.TOP;
+
+
+
+        WindowManager.LayoutParams OVERLAYparams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.TRANSLUCENT);
+                OVERLAYparams.height = 1040;
+                OVERLAYparams.gravity = Gravity.LEFT | Gravity.TOP;
+
+        wm.addView(oView,ALERTparams);
 
         topLeftView = new View(this);
         WindowManager.LayoutParams topLeftParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
@@ -142,20 +185,19 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (overlayedButton != null) {
-            wm.removeView(overlayedButton);
-            wm.removeView(topLeftView);
-            overlayedButton = null;
-            topLeftView = null;
-        }
+
     }
     @Override
     public void onClick(View v) {
-        wm.removeView(overlayedTransparent);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
     }
 
 
-    @Override
+   /* @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             float x = event.getRawX();
@@ -200,5 +242,5 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
             }
         }
         return false;
-    }
+    }*/
 }

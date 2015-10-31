@@ -42,7 +42,8 @@ public class TutorialActivity extends AppCompatActivity  {
         mButtonBar = new LinearLayout(this);
         mButtonBar.setOrientation(LinearLayout.HORIZONTAL);
         mButtonBar.setBackgroundColor(0x88ffffff);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
 
        mEndButton  = new Button(this);
         mEndButton.setText("End Tutorial");

@@ -26,6 +26,10 @@
             android:name=".OverlayObjects"
             android:exported="false" />
 
+        <service
+            android:name=".TutorialService"
+            android:exported="false" />
+
         <activity
 
             android:name=".AddTutorial"
