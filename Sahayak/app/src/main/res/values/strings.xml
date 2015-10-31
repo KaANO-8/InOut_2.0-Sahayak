@@ -4,4 +4,5 @@
     <string name="title_activity_overlay_objects">OverlayObjects</string>
     <string name="hindi">यहा क्लिक कीजिये</string>
     <string name="hindi2">अब यहा क्लिक कीजिये</string>
+    <string name="title_activity_add_tutorial">AddTutorial</string>
 </resources>

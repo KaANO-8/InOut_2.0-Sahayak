@@ -5,15 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class OverlayObjects extends Service implements View.OnTouchListener, View.OnClickListener {
 
+    String from;
     private View topLeftView;
     private Button overlayedButton, overlayedText, overlayedTransparent;
     private float offsetX;
@@ -26,13 +30,34 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
 
     @Override
     public IBinder onBind(Intent intent) {
+        Bundle extras = intent.getExtras();
+
+        Toast.makeText(getApplicationContext(),"hello",Toast.LENGTH_SHORT).show();
+        if(extras == null)
+            Log.d("Service", "null");
+        else
+        {
+            Log.d("Service","not null");
+            from = (String) extras.get("123");
+            if(from!=null)
+                Toast.makeText(getApplicationContext(),from+"hello",Toast.LENGTH_SHORT).show();
+        }
         return null;
     }
+
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        String key = "123";
+
+
+
+
+        /*Intent myIntent = getIntent(); // this getter is just for example purpose, can differ
+        if (myIntent !=null && myIntent.getExtras()!=null)
+            String value = myIntent.getExtras().getString(key);*/
 
         wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 

@@ -3,6 +3,7 @@
     package="com.pyrospiral.rahul.sahayak">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -24,8 +25,11 @@
         <service
             android:name=".OverlayObjects"
             android:exported="false" />
-    </application>
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+        <activity
+            android:name=".AddTutorial"
+            android:label="@string/title_activity_add_tutorial"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
 
 </manifest>
