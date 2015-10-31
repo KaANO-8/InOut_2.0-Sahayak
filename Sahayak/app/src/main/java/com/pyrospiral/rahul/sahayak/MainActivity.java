@@ -9,8 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +22,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent svc = new Intent(this, OverlayObjects.class);
-        startService(svc);
-        finish();
+        Button go;
+
+        go = (Button) findViewById(R.id.go);
+
+        go.setOnClickListener(this);
+        //
+        //stopService(svc);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,5 +60,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        EditText editText = (EditText) findViewById(R.id.edit_query);
+        String value = editText.getText().toString();
+        Toast.makeText()
+        Intent svc = new Intent(this, OverlayObjects.class);
+        startService(svc);
+        finish();
     }
 }

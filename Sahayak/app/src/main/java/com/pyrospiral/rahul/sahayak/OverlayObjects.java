@@ -3,6 +3,7 @@ package com.pyrospiral.rahul.sahayak;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.view.Gravity;
@@ -14,7 +15,6 @@ import android.widget.Button;
 public class OverlayObjects extends Service implements View.OnTouchListener, View.OnClickListener {
 
     private View topLeftView;
-
     private Button overlayedButton, overlayedText, overlayedTransparent;
     private float offsetX;
     private float offsetY;
@@ -33,6 +33,7 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
     public void onCreate() {
         super.onCreate();
 
+
         wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
         overlayedButton = new Button(this);
@@ -50,7 +51,7 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
         overlayedText.setTextColor(getResources().getColor(R.color.black));
 
         overlayedTransparent = new Button(this);
-        overlayedTransparent.setBackgroundColor(0x55fe4444);
+        overlayedTransparent.setBackgroundColor(Color.TRANSPARENT);
         overlayedTransparent.setOnClickListener(this);
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
@@ -65,7 +66,9 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
         params2.y = 440;
         //params.width = 100;
 
-        WindowManager.LayoutParams params_trans = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, PixelFormat.TRANSLUCENT);
+        WindowManager.LayoutParams params_trans = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
         params_trans.gravity = Gravity.LEFT | Gravity.TOP;
         params_trans.x = 43;
         params_trans.y = 550;
