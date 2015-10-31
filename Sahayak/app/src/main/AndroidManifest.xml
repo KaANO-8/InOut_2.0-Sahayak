@@ -27,9 +27,17 @@
             android:exported="false" />
 
         <activity
+
+            android:name=".AddTutorial"
+            android:label="@string/title_activity_add_tutorial"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
             android:name=".TutorialActivity"
             android:label="@string/title_activity_tutorial" >
         </activity>
+
 
     </application>
 
