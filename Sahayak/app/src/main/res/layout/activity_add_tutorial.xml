@@ -28,25 +28,46 @@
         android:text="Add your text here"
         android:gravity="center"
         android:textSize="20dp"
-        android:layout_marginLeft="100dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="130dp"
         android:layout_marginBottom="20dp"
         android:id="@+id/textView"/>
 
-    <EditText
+   <!-- <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="200dp"
         android:layout_marginLeft="20dp"
         android:id="@+id/edit_query"/>
 
-    <Button
+-->
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:roundedCorners="true"
+        app:bootstrapBrand="primary"
+        app:bootstrapSize="lg"
+        android:id="@+id/edit_query"
+        android:layout_marginTop="180dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        />
+
+    <com.beardedhen.androidbootstrap.BootstrapButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GO"
+        android:text="Go!"
+        app:bootstrapBrand="success"
+        app:bootstrapSize="lg"
+        app:buttonMode="regular"
+        app:showOutline="true"
         android:textSize="25dp"
+        app:roundedCorners="true"
         android:layout_gravity="center_vertical"
         android:foregroundGravity="center"
-        android:id="@+id/go"/>
+        android:id="@+id/go"
+        android:layout_marginTop="20dp"
+        />
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 
 public class AddTutorial extends AppCompatActivity {
 
@@ -22,12 +23,13 @@ public class AddTutorial extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button go = (Button) findViewById(R.id.go);
+        BootstrapButton go = (BootstrapButton) findViewById(R.id.go);
 
         go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editText = (EditText) findViewById(R.id.edit_query);
+
+                BootstrapEditText editText = (BootstrapEditText) findViewById(R.id.edit_query);
                 String value = editText.getText().toString();
                 saveToPreferences(getApplicationContext(), "Refresh_State_Controller", "1");
                 Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();

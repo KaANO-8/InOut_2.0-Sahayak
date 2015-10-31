@@ -12,7 +12,10 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class OverlayObjects extends Service implements View.OnTouchListener, View.OnClickListener {
@@ -58,7 +61,7 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
         super.onCreate();
 
         String key = "123";
-
+        Animation mAnimation;
 
 
 
@@ -74,6 +77,18 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
         //overlayedButton.setBackgroundColor(0x55fe4444);
         overlayedButton.setBackground(getResources().getDrawable(R.drawable.arrow_down));
         overlayedButton.setRotation(180);
+        overlayedButton.setVisibility(View.VISIBLE);
+
+        ImageView image = new ImageView(this);
+
+        int id = getResources().getIdentifier("com.pyrospiral.rahul.sahayak:drawable/arrow_down", null, null);
+
+        image.setImageResource(id);
+
+        Animation animation
+                = AnimationUtils.loadAnimation(this, R.anim.animation);
+
+        //image.startAnimation(animation);
 
         overlayedText = new Button(this);
         overlayedText.setText(R.string.hindi);
@@ -107,7 +122,7 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
         params_trans.width = 650;
         params_trans.height = 80;
 
-        wm.addView(overlayedButton, params);
+        wm.addView(image, params);
         wm.addView(overlayedText,params2);
         wm.addView(overlayedTransparent, params_trans);
 

@@ -90,7 +90,7 @@ public class TutorialActivity extends AppCompatActivity implements View.OnTouchL
 
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         wm.addView(oView, ALERTparams);
-        wm.addView(mButtonBar, BUTTONBARparams);
+        //wm.addView(mButtonBar, BUTTONBARparams);
 
         oView.setOnTouchListener(new View.OnTouchListener() {
             @Override
