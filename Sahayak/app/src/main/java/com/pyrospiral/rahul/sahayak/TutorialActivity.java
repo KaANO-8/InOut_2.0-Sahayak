@@ -11,17 +11,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class TutorialActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener {
+public class TutorialActivity extends AppCompatActivity  {
 
 
 
-    private float offsetX;
-    private float offsetY;
-    private int originalXPos;
-    private int originalYPos;
-    private boolean moving;
     private WindowManager wm;
     private View oView;
 
@@ -30,10 +26,12 @@ public class TutorialActivity extends AppCompatActivity implements View.OnTouchL
     private Button mPlaceButton;
     private LinearLayout mButtonBar;
 
-    @Override
-    public void onClick(View v) {
+    WindowManager.LayoutParams ALERTparams;
+    WindowManager.LayoutParams OVERLAYparams;
 
-    }
+    private String positions = "";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +41,10 @@ public class TutorialActivity extends AppCompatActivity implements View.OnTouchL
 
         mButtonBar = new LinearLayout(this);
         mButtonBar.setOrientation(LinearLayout.HORIZONTAL);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mButtonBar.setBackgroundColor(0x88ffffff);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
 
-        mNextButton  = new Button(this);
-        mNextButton.setText("Next");
-        params.gravity = Gravity.RIGHT;
-        mNextButton.setLayoutParams(params);
-        mEndButton  = new Button(this);
+       mEndButton  = new Button(this);
         mEndButton.setText("End Tutorial");
         params.gravity = Gravity.LEFT;
         mEndButton.setLayoutParams(params);
@@ -57,51 +52,91 @@ public class TutorialActivity extends AppCompatActivity implements View.OnTouchL
         mPlaceButton.setText("Place Arrow");
         params.gravity = Gravity.CENTER;
         mPlaceButton.setLayoutParams(params);
+        mNextButton  = new Button(this);
+        mNextButton.setText("Next");
+        params.gravity = Gravity.RIGHT;
+        mNextButton.setLayoutParams(params);
+
+        mPlaceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wm.removeView(oView);
+                wm.addView(oView,ALERTparams);
+            }
+        });
 
         mButtonBar.addView(mEndButton);
         mButtonBar.addView(mNextButton);
         mButtonBar.addView(mPlaceButton);
 
+
+
         oView = new LinearLayout(this);
         oView.setBackgroundColor(0x88ff0000); // The translucent red color
 
-        WindowManager.LayoutParams ALERTparams = new WindowManager.LayoutParams(
+         ALERTparams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                0 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSLUCENT);
 
 
-        WindowManager.LayoutParams OVERLAYparams = new WindowManager.LayoutParams(
+         OVERLAYparams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                0 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSLUCENT);
 
         WindowManager.LayoutParams BUTTONBARparams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                0 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSLUCENT);
-        BUTTONBARparams.gravity = Gravity.BOTTOM;
+        BUTTONBARparams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
 
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        wm.addView(oView, ALERTparams);
+//        wm.addView(oView, ALERTparams);
         //wm.addView(mButtonBar, BUTTONBARparams);
+        wm.addView(oView, OVERLAYparams);
+        wm.addView(mButtonBar, BUTTONBARparams);
+
 
         oView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN){
 
-                    Log.e("  "+ event.getX(),"   "+event.getY());
+
+                    Log.e("  " + event.getX(), "   " + event.getY());
+                    positions.concat("#"+event.getX()+"#"+event.getY());
+
+                    wm.removeView(oView);
+                    wm.addView(oView,OVERLAYparams);
+                    Log.e("Tut act"," new view added");
+                    EditText text = new EditText(getApplicationContext());
+                    text.setBackgroundColor(0xff000000);
+                    WindowManager.LayoutParams Textparams = new WindowManager.LayoutParams(
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            WindowManager.LayoutParams.WRAP_CONTENT,
+                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                            PixelFormat.TRANSLUCENT);
+                    Textparams.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL;
+
+                    wm.addView(text,Textparams);
+                    Log.e("Tut act"," edit text added");
+
                 }
                 return true;
             }
         });
+
+
+
+
     }
 
     @Override
@@ -127,23 +162,4 @@ public class TutorialActivity extends AppCompatActivity implements View.OnTouchL
     }
 
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-        Log.e("SADKJSAD","sad");
-
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            float x = event.getRawX();
-            float y = event.getRawY();
-
-            Log.e("Tut Activity ",x+"  "+y);
-
-
-        }
-
-        else if (event.getAction() == MotionEvent.ACTION_UP) {
-            return true;
-        }
-        return false;
-    }
 }
