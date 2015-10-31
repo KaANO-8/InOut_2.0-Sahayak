@@ -19,7 +19,14 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
 
     String from;
     private View topLeftView;
+
     private Button overlayedButton, overlayedText, overlayedTransparent;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return Service.START_STICKY;
+    }
+
     private float offsetX;
     private float offsetY;
     private int originalXPos;
@@ -133,6 +140,7 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
 
     }
 
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -154,8 +162,6 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
             int[] topLeftLocationOnScreen = new int[2];
             topLeftView.getLocationOnScreen(topLeftLocationOnScreen);
 
-            System.out.println("topLeftY="+topLeftLocationOnScreen[1]);
-            System.out.println("originalY="+originalYPos);
 
             float x = event.getRawX();
             float y = event.getRawY();

@@ -56,11 +56,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
+//        Intent svc = new Intent(this, OverlayObjects.class);
+//        startService(svc);
+//        finish();
+
+        Intent Tutorial = new Intent(this, TutorialActivity.class);
+        startActivity(Tutorial);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), AddTutorial.class);
+               /* Intent intent = new Intent(getApplicationContext(), AddTutorial.class);
+                startActivity(intent); */
+                Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
                 startActivity(intent);
         //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
           //              .setAction("Action", null).show();
