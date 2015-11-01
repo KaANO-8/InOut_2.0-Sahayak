@@ -43,7 +43,6 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
             message = "3";
         }
 
-
         String ChromeTut=message;
         counter=ChromeTut.charAt(0)-48;
         int k=0;
@@ -118,8 +117,8 @@ public class OverlayObjects extends Service implements View.OnTouchListener, Vie
         overlayedText = new Button(this);
         overlayedText.setText(R.string.hindi);
         overlayedText.setTextSize(20);
-        overlayedText.setAlpha(1f);
-        overlayedText.setBackgroundColor(getResources().getColor(R.color.white));
+        overlayedText.setAlpha(0.5f);
+        overlayedText.setBackgroundColor(0x88ffffff);
         overlayedText.setTextColor(getResources().getColor(R.color.black));
 
         overlayedTransparent = new Button(this);

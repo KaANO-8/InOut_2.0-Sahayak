@@ -21,7 +21,7 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
     String from;
     private View topLeftView;
 
-    private Button End, Place_Arrow, Next, pointer;
+    private Button End, Place_Arrow, Next, pointer,circle;
 
     String values = "";
 
@@ -118,7 +118,7 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
                         .EXTRA_TEXT, values);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                wm.removeView(mButtonBar);
+                stopSelf();
             }
         });
 
@@ -132,7 +132,7 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
         Place_Arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wm.addView(oView,ALERTparams);
+                wm.addView(oView, ALERTparams);
                 pointer = new Button(getApplicationContext());
                 //overlayedButton.setText("Overlay b");
                 pointer.setAlpha(0.8f);
@@ -194,7 +194,71 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
                 params.y = 470;
                 params.width = 100;
 
-                wm.addView(pointer,params);
+                wm.addView(pointer, params);
+
+                circle = new Button(getApplicationContext());
+                circle.setBackground(getResources().getDrawable(R.drawable.circle));
+
+                circle.setAlpha(0.8f);
+                circle.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            float x = event.getRawX();
+                            float y = event.getRawY();
+
+                            moving = false;
+
+                            int[] location = new int[2];
+                            circle.getLocationOnScreen(location);
+
+                            originalXPos = location[0];
+                            originalYPos = location[1];
+
+                            offsetX = originalXPos - x;
+                            offsetY = originalYPos - y;
+
+                        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                            int[] topLeftLocationOnScreen = new int[2];
+                            topLeftView.getLocationOnScreen(topLeftLocationOnScreen);
+
+
+                            float x = event.getRawX();
+                            float y = event.getRawY();
+
+                            WindowManager.LayoutParams params = (WindowManager.LayoutParams) circle.getLayoutParams();
+
+                            int newX = (int) (offsetX + x);
+                            int newY = (int) (offsetY + y);
+
+                            if (Math.abs(newX - originalXPos) < 1 && Math.abs(newY - originalYPos) < 1 && !moving) {
+                                return false;
+                            }
+
+                            params.x = newX - (topLeftLocationOnScreen[0]);
+                            params.y = newY - (topLeftLocationOnScreen[1]);
+
+                            wm.updateViewLayout(circle, params);
+                            moving = true;
+                        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                            if (moving) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+
+                WindowManager.LayoutParams circle_params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+                circle_params.gravity = Gravity.LEFT | Gravity.TOP;
+                circle_params.x = 150;
+                circle_params.y = 600;
+                circle_params.width = 100;
+                circle_params.height=100;
+
+                wm.addView(circle, circle_params);
+
+
 
             }
         });
@@ -218,9 +282,16 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
                 values = values.concat("#");
                 values = values.concat(Integer.toString(x[1]));
                 values = values.concat("#");
+
+                circle.getLocationOnScreen(x);
+                values = values.concat(Integer.toString(x[0]));
+                values = values.concat("#");
+                values = values.concat(Integer.toString(x[1]));
+                values = values.concat("#");
                 Toast.makeText(getApplicationContext(),"Your value is : "+values,Toast.LENGTH_SHORT).show();
                 wm.removeView(pointer);
                 wm.removeView(oView);
+                wm.removeView(circle);
             }
         });
 
@@ -266,6 +337,10 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
     public void onClick(View v) {
     }
 
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return super.onUnbind(intent);
+    }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
