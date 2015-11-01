@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.pyrospiral.android.templateapp.MainFragment"
+    android:background="@android:color/transparent">
+
+    <DigitalClock
+        android:layout_width="fill_parent"
+        android:layout_weight="30"
+        android:textSize="80sp"
+        android:gravity="center"
+        android:layout_height="0dp"
+        android:textColor="#FFF"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="30"
+        android:orientation="horizontal">
+
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Application List"
+            app:bootstrapBrand="primary"
+            app:bootstrapSize="xl"
+            app:buttonMode="regular"
+            app:showOutline="true"
+            android:textSize="25dp"
+            app:roundedCorners="true"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center"
+            android:id="@+id/applistbutton"
+            android:layout_weight="45"
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"/>
+
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sahayak    App"
+            app:bootstrapBrand="success"
+            app:bootstrapSize="xl"
+            app:buttonMode="regular"
+            app:showOutline="true"
+            android:textSize="25dp"
+            app:roundedCorners="true"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center"
+            android:id="@+id/sahayakbutton"
+            android:layout_weight="45"
+            />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="30"
+        android:orientation="horizontal">
+
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:bootstrapBrand="success"
+            android:text="Call"
+            app:bootstrapSize="xl"
+            app:buttonMode="regular"
+            app:showOutline="false"
+            android:textSize="25dp"
+            app:roundedCorners="true"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center"
+            android:id="@+id/call"
+            android:layout_weight="45"
+            />
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Message"
+            app:bootstrapBrand="secondary"
+            app:bootstrapSize="xl"
+            app:buttonMode="regular"
+            app:showOutline="false"
+            android:textSize="25dp"
+            app:roundedCorners="true"
+            android:layout_gravity="center_vertical"
+            android:foregroundGravity="center"
+            android:id="@+id/message"
+            android:layout_weight="45"
+            />
+    </LinearLayout>
+</LinearLayout>
