@@ -21,7 +21,9 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
     String from;
     private View topLeftView;
 
-    private Button End, Place_Arrow, Next;
+    private Button End, Place_Arrow, Next, pointer;
+
+    String values = "";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -35,6 +37,7 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
     private int originalYPos;
     private boolean moving;
     private WindowManager wm;
+    int[] x = new int[2];
 
 
     @Override
@@ -74,13 +77,35 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
         mButtonBar.setOrientation(LinearLayout.HORIZONTAL);
         mButtonBar.setBackgroundColor(0x88ffffff);
 
+        oView = new LinearLayout(this);
+        oView.setBackgroundColor(0x88ff0000); // The translucent red color
+
+        final WindowManager.LayoutParams ALERTparams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.TRANSLUCENT);
+        ALERTparams.height = 1040;
+        ALERTparams.gravity = Gravity.LEFT | Gravity.TOP;
+
+
+
+        final WindowManager.LayoutParams OVERLAYparams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.TRANSLUCENT);
+        OVERLAYparams.height = 1040;
+        OVERLAYparams.gravity = Gravity.LEFT | Gravity.TOP;
+
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
 
-
         End = new Button(this);
-        End.setText("End");
-        //overlayedButton.setOnTouchListener(this);
+        End.setText("SAVE");
         End.setAlpha(1f);
         End.setBackgroundColor(getResources().getColor(R.color.white));
         End.setTextColor(getResources().getColor(R.color.black));
@@ -89,7 +114,11 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
         End.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Yu clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class).putExtra(Intent
+                        .EXTRA_TEXT, values);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                wm.removeView(mButtonBar);
             }
         });
 
@@ -100,11 +129,73 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
         Place_Arrow.setBackgroundColor(getResources().getColor(R.color.white));
         Place_Arrow.setTextColor(getResources().getColor(R.color.black));
         params.gravity = Gravity.CENTER;
-        Place_Arrow.setLayoutParams(params);
         Place_Arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Yu clicked", Toast.LENGTH_SHORT).show();
+                wm.addView(oView,ALERTparams);
+                pointer = new Button(getApplicationContext());
+                //overlayedButton.setText("Overlay b");
+                pointer.setAlpha(0.8f);
+                pointer.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            float x = event.getRawX();
+                            float y = event.getRawY();
+
+                            moving = false;
+
+                            int[] location = new int[2];
+                            pointer.getLocationOnScreen(location);
+
+                            originalXPos = location[0];
+                            originalYPos = location[1];
+
+                            offsetX = originalXPos - x;
+                            offsetY = originalYPos - y;
+
+                        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                            int[] topLeftLocationOnScreen = new int[2];
+                            topLeftView.getLocationOnScreen(topLeftLocationOnScreen);
+
+
+                            float x = event.getRawX();
+                            float y = event.getRawY();
+
+                            WindowManager.LayoutParams params = (WindowManager.LayoutParams) pointer.getLayoutParams();
+
+                            int newX = (int) (offsetX + x);
+                            int newY = (int) (offsetY + y);
+
+                            if (Math.abs(newX - originalXPos) < 1 && Math.abs(newY - originalYPos) < 1 && !moving) {
+                                return false;
+                            }
+
+                            params.x = newX - (topLeftLocationOnScreen[0]);
+                            params.y = newY - (topLeftLocationOnScreen[1]);
+
+                            wm.updateViewLayout(pointer, params);
+                            moving = true;
+                        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                            if (moving) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
+                //overlayedButton.setBackgroundColor(0x55fe4444);
+                pointer.setBackground(getResources().getDrawable(R.drawable.arrow_down));
+                pointer.setVisibility(View.VISIBLE);
+
+                WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+                params.gravity = Gravity.LEFT | Gravity.TOP;
+                params.x = 150;
+                params.y = 470;
+                params.width = 100;
+
+                wm.addView(pointer,params);
+
             }
         });
 
@@ -120,7 +211,16 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
         Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Yu clicked", Toast.LENGTH_SHORT).show();
+
+                pointer.getLocationOnScreen(x);
+
+                values = values.concat(Integer.toString(x[0]));
+                values = values.concat("#");
+                values = values.concat(Integer.toString(x[1]));
+                values = values.concat("#");
+                Toast.makeText(getApplicationContext(),"Your value is : "+values,Toast.LENGTH_SHORT).show();
+                wm.removeView(pointer);
+                wm.removeView(oView);
             }
         });
 
@@ -146,31 +246,6 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
         wm.addView(mButtonBar,BUTTONBARparams);
 
 
-        oView = new LinearLayout(this);
-        oView.setBackgroundColor(0x88ff0000); // The translucent red color
-
-        WindowManager.LayoutParams ALERTparams = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                PixelFormat.TRANSLUCENT);
-                ALERTparams.height = 1040;
-                ALERTparams.gravity = Gravity.LEFT | Gravity.TOP;
-
-
-
-        WindowManager.LayoutParams OVERLAYparams = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                PixelFormat.TRANSLUCENT);
-                OVERLAYparams.height = 1040;
-                OVERLAYparams.gravity = Gravity.LEFT | Gravity.TOP;
-
-        wm.addView(oView,ALERTparams);
-
         topLeftView = new View(this);
         WindowManager.LayoutParams topLeftParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
         topLeftParams.gravity = Gravity.LEFT | Gravity.TOP;
@@ -191,56 +266,9 @@ public class TutorialService extends Service implements View.OnTouchListener, Vi
     public void onClick(View v) {
     }
 
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return false;
     }
-
-
-   /* @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            float x = event.getRawX();
-            float y = event.getRawY();
-
-            moving = false;
-
-            int[] location = new int[2];
-            overlayedButton.getLocationOnScreen(location);
-
-            originalXPos = location[0];
-            originalYPos = location[1];
-
-            offsetX = originalXPos - x;
-            offsetY = originalYPos - y;
-
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            int[] topLeftLocationOnScreen = new int[2];
-            topLeftView.getLocationOnScreen(topLeftLocationOnScreen);
-
-
-            float x = event.getRawX();
-            float y = event.getRawY();
-
-            WindowManager.LayoutParams params = (WindowManager.LayoutParams) overlayedButton.getLayoutParams();
-
-            int newX = (int) (offsetX + x);
-            int newY = (int) (offsetY + y);
-
-            if (Math.abs(newX - originalXPos) < 1 && Math.abs(newY - originalYPos) < 1 && !moving) {
-                return false;
-            }
-
-            params.x = newX - (topLeftLocationOnScreen[0]);
-            params.y = newY - (topLeftLocationOnScreen[1]);
-
-            wm.updateViewLayout(overlayedButton, params);
-            moving = true;
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (moving) {
-                return true;
-            }
-        }
-        return false;
-    }*/
 }

@@ -3,6 +3,7 @@ package com.pyrospiral.rahul.sahayak;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +14,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String PREF_FILE = "testPrefs";
 
+    Intent mIntent;
     int doing;
 
     @Override
@@ -26,10 +29,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mIntent = new Intent(getApplicationContext(), OverlayObjects.class);
+
+
+        String check=null;
+        Intent intent = this.getIntent();
+
+        if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT))
+        {
+            check =intent.getStringExtra(Intent.EXTRA_TEXT);
+            Toast.makeText(this, check, Toast.LENGTH_SHORT).show();
+        }
+
+
+
 
         final ListView list = (ListView) findViewById(R.id.ListView);
 
-        String[] titles = {"Chrome", "Calculator", "Calendar","Maps", "Play Store"};
+        String[] titles = {"इंटरनेट का उपयोग", "sms का उपयोग","परिगनक का उपयोग","कैलेंडर का उपयोग", "नक्शे का उपयोग"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.single_row, R.id.title, titles);
@@ -45,9 +62,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String key = "123";
 
                 Intent mIntent = new Intent(getApplicationContext(), OverlayObjects.class);
-                mIntent.putExtra(key, itemValue);
+                mIntent.putExtra(key, "3#1#1#300#930#200#930#550#90#44#1000$1#2#300#350#10#400#600#340#10#700$1#1#10#350#500#400#80#70#600#470$");
                 startService(mIntent);
-                finish();
+
+                Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+                sendIntent.setData(Uri.parse("smsto:9408748316"));
+                startActivity(sendIntent);
             }
         });
 
